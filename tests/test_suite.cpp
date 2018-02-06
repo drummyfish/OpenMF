@@ -16,7 +16,6 @@ bool testMath()
     const double err = 0.01;
 
     ass(std::abs(testAngle.x - toQuatAndBack.x) <= err && std::abs(testAngle.y - toQuatAndBack.y) <= err && std::abs(testAngle.z - toQuatAndBack.z) <= err);
-
     ass(std::abs(MFMath::length(MFMath::Vec3(-1,1,2)) - 2.4494) <= 0.001);
 
     return getNumErrors() == 0;

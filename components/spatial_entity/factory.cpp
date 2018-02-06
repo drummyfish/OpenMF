@@ -78,7 +78,7 @@ MFGame::SpatialEntity::Id SpatialEntityFactory::createCapsuleEntity(std::string 
         btTransform(btQuaternion(0, 0, 0, mass),
         btVector3(0, 0, 0)));
 
-    btVector3 inertia;
+    btVector3 inertia = btVector3(0,0,0);
     mPhysicalCapsuleShape->calculateLocalInertia(mass,inertia);
     body.mBody = std::make_shared<btRigidBody>(mass, body.mMotionState.get(), mPhysicalCapsuleShape.get(), inertia);
     body.mBody->setActivationState(DISABLE_DEACTIVATION);
@@ -155,7 +155,7 @@ MFGame::SpatialEntity::Id SpatialEntityFactory::createTestShapeEntity(btCollisio
     physicalBody->setActivationState(DISABLE_DEACTIVATION);
     mPhysicsWorld->getWorld()->addRigidBody(physicalBody.get());
 
-    return createEntity(visualTransform.get(),physicalBody,motionState,"test");
+    return createEntity(visualTransform.get(),physicalBody,motionState,"test",SpatialEntity::RIGID);
 }
 
 MFGame::SpatialEntity::Id SpatialEntityFactory::createTestBallEntity()

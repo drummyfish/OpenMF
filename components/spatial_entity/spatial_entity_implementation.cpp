@@ -13,20 +13,24 @@ void SpatialEntityImplementation::setPhysicsBehavior(SpatialEntity::PhysicsBehav
 
     mPhysicsBehavior = behavior;
 
-    // TODO: implement the cases
-
     switch (behavior)
     {
         case SpatialEntity::STATIC:
+            setMass(0);
             break;
 
         case SpatialEntity::KINEMATIC:
+            setMass(0);
+            // TODO: this?
             break;
 
         case SpatialEntity::RIGID:
+            setMass(mMass);
+            // TODO: set angular factor?
             break;
 
         case SpatialEntity::RIGID_PLAYER:
+            setMass(mMass);
             mBulletBody->setAngularFactor(0);
             break;
 
@@ -245,10 +249,23 @@ SpatialEntityImplementation::SpatialEntityImplementation(): SpatialEntity()
     mBulletBody = 0;
     mBulletMotionState = 0;
     mCreateDebugGeometry = false;
+    mMass = 1;
 }
 
 SpatialEntityImplementation::~SpatialEntityImplementation()
 { 
+}
+
+void SpatialEntityImplementation::setMass(double newMass)
+{
+    mMass = newMass;
+
+    if (hasPhysics())
+    {
+        btVector3 inertia = btVector3(0,0,0);
+        mBulletBody->getCollisionShape()->calculateLocalInertia(mMass,inertia);
+        mBulletBody->setMassProps(mMass,inertia);
+    }
 }
 
 void SpatialEntityImplementation::update(double dt)

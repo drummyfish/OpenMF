@@ -56,6 +56,9 @@ public:
 //  detach()
 //  mergeWithChildren()
 
+    double getMass()                                    { return mMass;                };
+    virtual void setMass(double newMass)=0;
+
     virtual bool hasCollision()=0;
     void setName(std::string name)                      { mName = name;                };
     std::string getName()                               { return mName;                };
@@ -76,6 +79,7 @@ protected:
     bool mReady;
     Id mId;
     int mPhysicsBehavior;
+    double mMass;
 
     static Id sNextId;
 };

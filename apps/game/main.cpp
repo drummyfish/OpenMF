@@ -10,7 +10,6 @@ public:
     {
         mPlayerEntity = mSpatialEntityManager->getEntityById(mSpatialEntityFactory->createCapsuleEntity("tommy.4ds"));
         mPlayerEntityController = new MFGame::PlayerEntityController(mPlayerEntity,mRenderer,mInputManager,mPhysicsWorld);
-
         mSpatialEntityFactory->setDebugMode(false);
     };
 

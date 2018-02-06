@@ -177,7 +177,7 @@ void Engine::step(double dt)
       
     if (render)
     {
-        mRenderer->frame(mEngineSettings.mUpdatePeriod); // TODO: Use actual delta time
+        mRenderer->frame(mEngineSettings.mUpdatePeriod);
       
         if (mRenderer->done())
             mIsRunning = false;
@@ -204,4 +204,4 @@ void Engine::run()
         step();
 }
 
-}
+}   // namespace

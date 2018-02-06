@@ -25,7 +25,7 @@ public:
         std::shared_ptr<btRigidBody> physicsBody=0,
         std::shared_ptr<btDefaultMotionState> physicsMotionsState=0, 
         std::string name="",
-        SpatialEntity::PhysicsBehavior physicsBehavior=SpatialEntity::RIGID);
+        SpatialEntity::PhysicsBehavior physicsBehavior=SpatialEntity::STATIC);
 
     MFGame::SpatialEntity::Id createTestBallEntity();
     MFGame::SpatialEntity::Id createTestBoxEntity();
