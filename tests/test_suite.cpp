@@ -34,12 +34,25 @@ bool testEngine()
 
     ass(entityManager->getEntityById(10) == 0);
 
-    message("Create an entity.");
+    message("Create test entities.");
     MFGame::SpatialEntity::Id entity1Id = entityFactory->createTestBallEntity();
-    message("New entity id: " + std::to_string(entity1Id));
+    MFGame::SpatialEntity::Id entity2Id = entityFactory->createTestBoxEntity();
+    MFGame::SpatialEntity::Id entity3Id = entityFactory->createTestBoxEntity();
+
     ass(entityManager->getEntityById(entity1Id) != 0);
+
     auto entity1 = entityManager->getEntityById(entity1Id);
+    auto entity2 = entityManager->getEntityById(entity2Id);
+    auto entity3 = entityManager->getEntityById(entity3Id);
+
     ass(entityManager->getEntityById(MFGame::SpatialEntity::NullId) == 0);
+
+    // Put one rigid box above another, static box.
+    MFMath::Vec3 staticInitPos = MFMath::Vec3(100,10,10);
+    entity2->setPosition(staticInitPos);
+    entity2->setPhysicsBehavior(MFGame::SpatialEntity::STATIC);
+    entity3->setPosition(staticInitPos + MFMath::Vec3(0,0,20));
+    entity3->setPhysicsBehavior(MFGame::SpatialEntity::RIGID);
 
     MFMath::Vec3 initPos = entity1->getPosition();
     message("entity position: " + initPos.str());
@@ -51,10 +64,14 @@ bool testEngine()
     for (unsigned int i = 0; i < steps; ++i)
         testEngine->step(0.1);
 
+    // Entity1 should have fallen down.
     MFMath::Vec3 endPos = entity1->getPosition();
+    ass(std::abs(initPos.z - endPos.z) > 10.0);   // Did it fall?
     message("entity position: " + endPos.str());
 
-    ass(std::abs(initPos.z - endPos.z) > 10.0);   // Did it fall?
+    // Entity2 box shouldn't have moved (is static) and entity3 box should be above (on top of it).
+    ass(MFMath::distance(staticInitPos,entity2->getPosition()) < 0.001);
+    ass(entity2->getPosition().z < entity3->getPosition().z);
 
     message("Delete engine.");
     delete testEngine;
