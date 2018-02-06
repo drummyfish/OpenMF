@@ -1,6 +1,6 @@
 #include <iostream>
 #include <engine/engine.hpp>
-#include <controllers/player_controller.hpp>
+#include <controllers/entity_controllers.hpp>
 #include <cxxopts.hpp>
 
 class OpenMFEngine: public MFGame::Engine
@@ -9,19 +9,19 @@ public:
     OpenMFEngine(MFGame::Engine::EngineSettings settings): MFGame::Engine(settings)
     {
         mPlayerEntity = mSpatialEntityManager->getEntityById(mSpatialEntityFactory->createCapsuleEntity("tommy.4ds"));
-        mPlayerController = new MFGame::PlayerController(mPlayerEntity,mRenderer,mInputManager,mPhysicsWorld);
+        mPlayerEntityController = new MFGame::PlayerEntityController(mPlayerEntity,mRenderer,mInputManager,mPhysicsWorld);
 
         mSpatialEntityFactory->setDebugMode(false);
     };
 
     virtual ~OpenMFEngine()
     {
-        delete mPlayerController;
+        delete mPlayerEntityController;
     };
 
     virtual void frame() override
     {
-        mPlayerController->update(mEngineSettings.mUpdatePeriod);
+        mPlayerEntityController->update(mEngineSettings.mUpdatePeriod);
     };
 
     void setPlayerPosition(MFMath::Vec3 pos)
@@ -31,7 +31,7 @@ public:
 
 protected:
     MFGame::SpatialEntity *mPlayerEntity;
-    MFGame::PlayerController *mPlayerController;
+    MFGame::PlayerEntityController *mPlayerEntityController;
 };
 
 int main(int argc, char** argv)

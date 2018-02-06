@@ -1,12 +1,30 @@
-#ifndef CHARACTER_ENTITY_CONTROLLER_H
-#define CHARACTER_ENTITY_CONTROLLER_H
+#ifndef ENTITY_CONTROLLERS_H
+#define ENTITY_CONTROLLERS_H
 
-#include <controllers/entity_controller.hpp>
-#include <input/base_input_manager.hpp>
+#include <spatial_entity/spatial_entity.hpp>
 #include <physics/base_physics_world.hpp>
+#include <renderer/base_renderer.hpp>
+#include <input/base_input_manager.hpp>
+#include <controllers/camera_controllers.hpp>
 
 namespace MFGame
 {
+
+class EntityController
+{
+public:
+    EntityController(SpatialEntity *entity);
+
+    /**
+      Set the velocity vector relatively to where the entity is facing.
+    */
+
+    void setRelativeVelocityVector(MFMath::Vec3 vector);
+    SpatialEntity *getEntity()    { return mEntity;   };
+
+protected:
+    SpatialEntity *mEntity;
+};
 
 class CharacterEntityController: public EntityController
 {
@@ -50,6 +68,19 @@ protected:
     float mSpeeds[3];
 };
 
-}
+class PlayerEntityController: public CharacterEntityController
+{
+public:
+    PlayerEntityController(MFGame::SpatialEntity *playerEntity, MFRender::Renderer *renderer, MFInput::InputManager *inputManager, MFPhysics::PhysicsWorld *physicsWorld=0);
+    virtual ~PlayerEntityController();
+    void update(double dt);
 
-#endif // CHARACTER_ENTITY_CONTROLLER_H
+protected:
+    OrbitEntityCameraController *mCameraController;
+    MFRender::Renderer *mRenderer;
+    MFInput::InputManager *mInputManager;
+};
+
+}   // namespace
+
+#endif // ENTITY_CONTROLLER_H
